@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId('role_id')->constrained()->onDelete('cascade');
+            $table->foreignId('role_id')->default(2)->constrained()->onDelete('cascade'); // Menggunakan onDelete jika role dihapus
             $table->timestamps();
         });
     }

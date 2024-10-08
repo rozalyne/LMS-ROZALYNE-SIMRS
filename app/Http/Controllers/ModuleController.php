@@ -6,7 +6,7 @@ use App\Models\Module;
 use App\Models\Course;
 use App\Models\UserProgress;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; // Import Log untuk debugging
+use Illuminate\Support\Facades\Log;
 
 class ModuleController extends Controller
 {
@@ -19,7 +19,13 @@ class ModuleController extends Controller
         // Ambil module sesuai course dan moduleId
         $module = Module::where('course_id', $course->id)
                         ->where('id', $moduleId)
-                        ->firstOrFail();
+                        ->first();
+
+        // Debugging: Pastikan module ditemukan
+        if (!$module) {
+            Log::error('Module not found', ['course_id' => $courseId, 'module_id' => $moduleId]);
+            abort(404, 'Module not found');
+        }
 
         // Debugging: Cek apakah module berhasil diambil
         Log::info('Module found:', ['module' => $module]);
@@ -30,9 +36,9 @@ class ModuleController extends Controller
                                 ->first();
 
         // Ambil modul berikutnya
-        $nextModule = $module->nextModule();
+        $nextModule = optional($module)->nextModule();
 
-        return view('modules.show', compact('module', 'nextModule', 'progress', 'course')); // Sertakan $course
+        return view('modules.show', compact('module', 'nextModule', 'progress', 'course'));
     }
 
     // Menandai modul sebagai selesai
@@ -41,7 +47,13 @@ class ModuleController extends Controller
         // Ambil module sesuai course dan moduleId
         $module = Module::where('course_id', $courseId)
                         ->where('id', $moduleId)
-                        ->firstOrFail();
+                        ->first();
+
+        // Debugging: Pastikan module ditemukan
+        if (!$module) {
+            Log::error('Module not found', ['course_id' => $courseId, 'module_id' => $moduleId]);
+            abort(404, 'Module not found');
+        }
 
         // Tandai modul ini selesai untuk user yang login
         UserProgress::updateOrCreate(
@@ -50,9 +62,9 @@ class ModuleController extends Controller
         );
 
         // Ambil modul berikutnya
-        $nextModule = $module->nextModule();
+        $nextModule = optional($module)->nextModule();
 
-        // Jika tidak ada modul berikutnya, redirect ke halaman lain, misal halaman penyelesaian
+        // Jika tidak ada modul berikutnya, redirect ke halaman lain
         if (!$nextModule) {
             return redirect()->route('courses.show', $courseId)
                              ->with('status', 'Selamat! Anda telah menyelesaikan semua modul.');

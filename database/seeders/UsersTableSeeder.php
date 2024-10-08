@@ -9,19 +9,32 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('users')->insert([
+        DB::table('users')->updateOrInsert(
+            ['email' => 'admin@example.com'], // Mencari entri berdasarkan email
             [
-                'name' => 'Admin User',
-                'email' => 'admin@example.com',
-                'password' => bcrypt('password'),
+                'name' => 'Super Admin',
+                'password' => bcrypt('password123'),
                 'role_id' => 1, // Admin
-            ],
+            ]
+        );
+
+        DB::table('users')->updateOrInsert(
+            ['email' => 'user@example.com'],
             [
                 'name' => 'Regular User',
-                'email' => 'user@example.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2, // User
-            ],
-        ]);
+            ]
+        );
+
+        DB::table('users')->updateOrInsert(
+            ['email' => 'newadmin@example.com'],
+            [
+                'name' => 'New Admin User',
+                'password' => bcrypt('password456'),
+                'role_id' => 1, // Admin
+            ]
+        );
     }
+
 }

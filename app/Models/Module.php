@@ -10,7 +10,7 @@ class Module extends Model
     use HasFactory;
 
     // Menentukan kolom yang bisa diisi secara massal
-    protected $fillable = ['course_id', 'title', 'content', 'order'];
+    protected $fillable = ['section_id','course_id', 'title', 'content', 'order'];
 
     /**
      * Relasi ke Course (1-N): Satu module dimiliki oleh satu course.
@@ -22,6 +22,10 @@ class Module extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function section()
+{
+    return $this->belongsTo(Section::class);
+}
     /**
      * Mendapatkan modul berikutnya dalam urutan course.
      * Mengambil modul dengan `order` yang lebih besar dari modul saat ini.
@@ -34,7 +38,7 @@ class Module extends Model
                      ->where('order', '>', $this->order)      // Cari modul dengan order lebih besar
                      ->orderBy('order', 'asc')                // Urutkan berdasarkan order yang terkecil
                      ->first();                               // Ambil modul berikutnya, jika ada
-    } 2
+    }
 
     /**
      * Mendapatkan modul sebelumnya dalam urutan course.

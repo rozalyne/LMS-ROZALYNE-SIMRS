@@ -9,11 +9,11 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description']; // Pastikan field sesuai dengan yang ada di migration
+    protected $fillable = ['name', 'description'];
 
-    // Relasi ke modul
-    public function modules()
+    // Relationship with Sections
+    public function sections()
     {
-        return $this->hasMany(Module::class); // Menghubungkan course ke banyak modul
+        return $this->hasMany(Section::class);
     }
 }
