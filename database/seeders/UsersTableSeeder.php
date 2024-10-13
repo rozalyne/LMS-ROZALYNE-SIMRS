@@ -10,10 +10,10 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->updateOrInsert(
-            ['email' => 'admin@example.com'], // Mencari entri berdasarkan email
+            ['email' => 'admin@gmail.com'], // Mencari entri berdasarkan email
             [
-                'name' => 'Super Admin',
-                'password' => bcrypt('password123'),
+                'name' => 'Super Admin Rozalyne',
+                'password' => bcrypt('erlpia1031'),
                 'role_id' => 1, // Admin
             ]
         );
