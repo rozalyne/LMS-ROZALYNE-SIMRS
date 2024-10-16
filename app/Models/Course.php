@@ -16,4 +16,10 @@ class Course extends Model
     {
         return $this->hasMany(Section::class);
     }
+
+    // Relationship with Modules
+    public function modules()
+    {
+        return $this->hasMany(Module::class);
+    }
 }

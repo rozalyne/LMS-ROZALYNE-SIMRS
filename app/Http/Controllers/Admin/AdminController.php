@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Models\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -23,9 +24,10 @@ class AdminController extends Controller
      */
     public function indexCourses()
     {
-        $courses = Course::all(); // Mengambil semua kursus
-        return view('admin.courses.index', compact('courses')); // Mengembalikan view dengan data kursus
+        $courses = Course::with('modules')->get(); // Pastikan untuk memuat modules terkait
+        return view('admin.courses.index', compact('courses'));
     }
+
 
     /**
      * Tampilkan formulir untuk membuat kursus baru.
@@ -148,4 +150,28 @@ class AdminController extends Controller
 
         return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully.'); // Mengarahkan kembali ke indeks kursus dengan pesan sukses
     }
+    public function create()
+    {
+        return view('admin.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role_id' => $request->role, // Ensure this corresponds to your role logic
+        ]);
+
+        return redirect()->route('admin.users')->with('success', 'Admin created successfully.');
+    }
 }
+

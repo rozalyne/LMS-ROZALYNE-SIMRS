@@ -1,74 +1,77 @@
 <?php
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\Admin\ModuleController;
+use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 
-// Rute utama
+
+// Authentication Routes
+require __DIR__.'/auth.php'; // Ensure this is included for login and register routes
+
+// Main Route
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Rute untuk melihat modul
-Route::get('/modules', [ModuleController::class, 'index'])->name('modules.index');
-
-// Rute untuk mengedit course (admin)
-Route::get('/admin/courses/{course}/edit', [AdminController::class, 'editCourse'])->name('admin.courses.edit'); // <-- Tambahkan ini
-Route::put('/admin/courses/{course}', [AdminController::class, 'updateCourse'])->name('admin.courses.update'); // Tambahkan rute untuk memperbarui kursus
-
-// Rute untuk menghapus course (admin)
-Route::delete('/admin/courses/{course}', [AdminController::class, 'destroyCourse'])->name('admin.courses.destroy'); // <-- Tambahkan ini
-
-
-// Rute untuk membuat modul
-Route::get('/modules/create', [ModuleController::class, 'create'])->name('modules.create');
-
-// Rute dashboard dengan pengecekan role menggunakan Auth facade
-Route::get('/dashboard', function () {
-    if (Auth::check() && Auth::user()->role_id === 1) {
-        return redirect()->route('admin.dashboard'); // Redirect ke dashboard admin
-    }
-    return view('dashboard'); // Jika bukan admin, tampilkan dashboard user
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Rute untuk pendaftaran admin (tanpa middleware auth)
-Route::get('/admin/create', [AdminController::class, 'createAdmin'])->name('admin.create');
-Route::post('/admin/store', [AdminController::class, 'storeAdmin'])->name('admin.store');
-
-// Middleware untuk memastikan otentikasi
+// Authenticated Routes
 Route::middleware('auth')->group(function () {
-    // Rute untuk admin
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
-    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    // Dashboard
+    Route::get('/dashboard', function () {
+        if (Auth::check() && Auth::user()->role_id === 1) {
+            return redirect()->route('admin.dashboard');
+        }
+        return view('dashboard');
+    })->name('dashboard');
 
-    // Rute untuk profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Rute untuk course (admin)
-    Route::prefix('admin/courses')->name('admin.courses.')->group(function () {
-        Route::get('/', [AdminController::class, 'indexCourses'])->name('index'); // Rute untuk melihat semua course
-        Route::get('/create', [AdminController::class, 'createCourse'])->name('create'); // Rute untuk membuat course
-        Route::post('/', [AdminController::class, 'storeCourse'])->name('store'); // Rute untuk menyimpan course
+    // Profile Routes
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    // Rute untuk module (admin)
-    Route::prefix('admin/modules')->name('admin.modules.')->group(function () {
-        Route::get('/create', [AdminController::class, 'createModule'])->name('create'); // Rute untuk membuat module
-        Route::post('/', [AdminController::class, 'storeModule'])->name('store'); // Rute untuk menyimpan module
-    });
+    // Admin Routes
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+        Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
 
-    // Rute untuk section (admin)
-    Route::prefix('admin/sections')->name('admin.sections.')->group(function () {
-        Route::get('/create', [AdminController::class, 'createSection'])->name('create'); // Rute untuk membuat section
-        Route::post('/', [AdminController::class, 'storeSection'])->name('store'); // Rute untuk menyimpan section
+        Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
+
+        Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+        Route::post('/users', [UserController::class, 'store'])->name('admin.users.store'); // Add this line for storing the new admin
+
+        // Courses
+        Route::prefix('courses')->name('admin.courses.')->group(function () {
+            Route::get('/', [CourseController::class, 'index'])->name('index');
+            Route::get('/create', [CourseController::class, 'create'])->name('create');
+            Route::post('/', [CourseController::class, 'store'])->name('store');
+            Route::get('/{course}', [CourseController::class, 'show'])->name('show');
+            Route::get('/{course}/edit', [CourseController::class, 'edit'])->name('edit');
+            Route::put('/{course}', [CourseController::class, 'update'])->name('update');
+            Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
+        });
+
+        // Module Routes
+        Route::prefix('courses/{course}/modules')->name('admin.courses.modules.')->group(function () {
+            Route::get('/', [ModuleController::class, 'index'])->name('index');
+            Route::get('/create', [ModuleController::class, 'create'])->name('create');
+            Route::post('/', [ModuleController::class, 'store'])->name('store');
+            Route::get('/{module}', [ModuleController::class, 'show'])->name('show');
+            Route::get('/{module}/edit', [ModuleController::class, 'edit'])->name('edit');
+            Route::put('/{module}', [ModuleController::class, 'update'])->name('update');
+            Route::delete('/{module}', [ModuleController::class, 'destroy'])->name('destroy');
+        });
     });
 });
 
-// Rute untuk autentikasi
-require __DIR__.'/auth.php';
+// Logout Route
+Route::POST('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');

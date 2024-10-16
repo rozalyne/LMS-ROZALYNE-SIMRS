@@ -1,47 +1,24 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Register Admin') }}
-        </h2>
-    </x-slot>
+<!-- resources/views/admin/users/create.blade.php -->
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form method="POST" action="{{ route('admin.store') }}">
-                        @csrf
-                        <div>
-                            <label for="name">Name</label>
-                            <input id="name" type="text" name="name" required autofocus />
-                            @error('name')
-                                <span class="text-red-600">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="email">Email</label>
-                            <input id="email" type="email" name="email" required />
-                            @error('email')
-                                <span class="text-red-600">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="password">Password</label>
-                            <input id="password" type="password" name="password" required />
-                            @error('password')
-                                <span class="text-red-600">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="password_confirmation">Confirm Password</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation" required />
-                        </div>
-                        <div>
-                            <button type="submit">Register Admin</button>
-                        </div>
-                    </form>
-                </div>
+@section('content')
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold">Create New User</h1>
+        <form action="{{ route('admin.users.store') }}" method="POST" class="mt-4">
+            @csrf
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" name="name" id="name" class="mt-1 block w-full border-gray-300 rounded-md" required>
             </div>
-        </div>
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="email" id="email" class="mt-1 block w-full border-gray-300 rounded-md" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" name="password" id="password" class="mt-1 block w-full border-gray-300 rounded-md" required>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create User</button>
+        </form>
     </div>
-</x-app-layout>
+@endsection

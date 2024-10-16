@@ -10,7 +10,7 @@
 <body class="bg-gray-100">
     <div class="min-h-screen flex flex-col">
         <header class="bg-white shadow">
-            <nav class="container mx-auto p-4 flex justify-between items-center" role="navigation">
+            <nav class="container mx-auto p-4 flex justify-between items-center">
                 <h1 class="text-xl font-bold">Admin Dashboard</h1>
                 <div>
                     <!-- Navigation Links -->
@@ -18,12 +18,13 @@
                     <a href="{{ route('admin.courses.index') }}" class="text-blue-500 hover:underline ml-4">Courses</a>
                     <a href="{{ route('profile.edit') }}" class="text-blue-500 hover:underline ml-4">Profile</a>
 
-                    <!-- Logout Link -->
+                    <!-- Logout Button -->
                     <form action="{{ route('logout') }}" method="POST" class="inline ml-4">
                         @csrf
                         <button type="submit" class="text-blue-500 hover:underline">Logout</button>
                     </form>
                 </div>
+
             </nav>
         </header>
 
@@ -32,7 +33,7 @@
         </main>
 
         <footer class="bg-white text-center p-4">
-            <p>&copy; {{ date('Y') }} Your Company. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} ROZALYNE. All rights reserved.</p>
         </footer>
     </div>
 </body>

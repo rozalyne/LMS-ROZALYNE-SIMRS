@@ -1,18 +1,17 @@
-<!-- resources/views/admin/dashboard.blade.php -->
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app') <!-- Extend your layout file -->
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("Welcome to the Admin Dashboard!") }}
-                </div>
-            </div>
+@section('content') <!-- Start the content section -->
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold">Dashboard</h1>
+        <p class="mt-4">Welcome to the admin dashboard! Here you can manage users and view statistics.</p>
+
+        <div class="mt-6">
+            <!-- Additional statistics or features can go here -->
+        </div>
+
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold">Manage Courses</h2>
+            <a href="{{ route('admin.courses.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">View All Courses</a>
         </div>
     </div>
-</x-app-layout>
+@endsection <!-- End the content section -->

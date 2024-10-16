@@ -51,5 +51,11 @@ public function isAdmin()
 {
     return $this->role_id === 1; // Misalnya, 1 adalah ID role untuk admin
 }
+// In User.php model
+public function role()
+{
+    return $this->belongsTo(Role::class);
+}
+
 
 }
