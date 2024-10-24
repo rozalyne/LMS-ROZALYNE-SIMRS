@@ -34,6 +34,11 @@ class CourseController extends Controller
         return redirect()->route('admin.courses.index')->with('success', 'Course created successfully.');
     }
 
+    public function show(Course $course)
+    {
+        return view('admin.courses.show', compact('course')); // Return the view to show the course details
+    }
+
     public function edit(Course $course)
     {
         return view('admin.courses.edit', compact('course')); // Return the view to edit the course

@@ -32,7 +32,7 @@
         </main>
 
         <footer class="bg-white text-center p-4">
-            <p>&copy; {{ date('Y') }} Your Company. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Rozalyne. All rights reserved.</p>
         </footer>
     </div>
 </body>

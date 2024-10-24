@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -7,9 +8,8 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 
-
 // Authentication Routes
-require __DIR__.'/auth.php'; // Ensure this is included for login and register routes
+require __DIR__.'/auth.php';
 
 // Main Route
 Route::get('/', function () {
@@ -36,15 +36,11 @@ Route::middleware('auth')->group(function () {
     // Admin Routes
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+
+        // Users
         Route::get('/users', [UserController::class, 'index'])->name('admin.users');
         Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-        Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-
-        Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
-
-        Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-
-        Route::post('/users', [UserController::class, 'store'])->name('admin.users.store'); // Add this line for storing the new admin
+        Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
 
         // Courses
         Route::prefix('courses')->name('admin.courses.')->group(function () {
@@ -71,7 +67,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Logout Route
-Route::POST('/logout', function () {
+Route::post('/logout', function () {
     Auth::logout();
     return redirect('/');
 })->name('logout');

@@ -1,35 +1,25 @@
 @extends('layouts.app')
 
+@section('title', 'Detail Modul')
+
 @section('content')
-<div class="container">
-    <h1>Modules for {{ $course->name }}</h1>
+    <h2>{{ $module->title }}</h2>
+    <p>{{ $module->content }}</p>
 
-    <a href="{{ route('admin.modules.create', $course) }}" class="btn btn-primary">Create New Module</a>
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    @if ($progress)
+        <p>Status: Selesai</p>
+    @else
+        <form action="{{ route('modules.complete', [$course->id, $module->id]) }}" method="POST">
+            @csrf
+            <button type="submit">Tandai sebagai Selesai</button>
+        </form>
     @endif
 
-    <h2>Module List</h2>
-    <ul class="space-y-4">
-        @if($modules->isEmpty())
-            <li>No modules available for this course.</li>
-        @else
-            @foreach($modules as $module)
-                <li class="border p-4 rounded shadow">
-                    <h3 class="font-bold">{{ $module->title }}</h3>
-                    <p>{{ $module->content }}</p>
-                    <a href="{{ route('admin.modules.edit', $module) }}" class="text-blue-500">Edit</a>
-                    <form action="{{ route('admin.modules.destroy', $module) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500">Delete</button>
-                    </form>
-                </li>
-            @endforeach
-        @endif
-    </ul>
-</div>
+    @if ($nextModule)
+        <a href="{{ route('admin.courses.modules.show', [$course->id, $nextModule->id]) }}">Modul Selanjutnya</a>
+    @endif
+
+    @if ($previousModule)
+        <a href="{{ route('admin.courses.modules.show', [$course->id, $previousModule->id]) }}">Modul Sebelumnya</a>
+    @endif
 @endsection

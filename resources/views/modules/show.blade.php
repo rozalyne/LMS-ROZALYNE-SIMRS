@@ -16,6 +16,7 @@
     @endif
 
     @if ($nextModule)
-        <a href="{{ route('modules.show', [$course->id, $nextModule->id]) }}">Modul Selanjutnya</a>
+    <a href="{{ route('admin.courses.modules.show', [$course->id, $nextModule->id]) }}">Modul Selanjutnya</a>
+
     @endif
 @endsection

@@ -1,21 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Modules for {{ $course->name }}</h1>
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold">Modules for {{ $course->name }}</h1>
 
-    @if($modules->isEmpty())
-        <p>No modules available for this course.</p>
-    @else
-        <ul>
-            @foreach($modules as $module)
-                <li>
-                    <a href="{{ route('courses.modules.show', [$course->id, $module->id]) }}">{{ $module->title }}</a>
-                </li>
-            @endforeach
-        </ul>
-    @endif
-
-    <a href="{{ route('admin.courses.show', $course->id) }}" class="btn btn-secondary">Back to Course</a>
-</div>
+        <div class="mt-6">
+            <ul class="space-y-4">
+                @foreach($modules as $module)
+                    <li>
+                        <a href="{{ route('admin.modules.show', [$course->id, $module->id]) }}" class="text-blue-500 hover:underline">
+                            {{ $module->title }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 @endsection
