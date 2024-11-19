@@ -1,19 +1,21 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="container mx-auto py-8">
-        <h1 class="text-2xl font-bold">Modules for {{ $course->name }}</h1>
+@section('title', 'Modules for ' . $course->name)
 
-        <div class="mt-6">
-            <ul class="space-y-4">
-                @foreach($modules as $module)
-                    <li>
-                        <a href="{{ route('admin.modules.show', [$course->id, $module->id]) }}" class="text-blue-500 hover:underline">
-                            {{ $module->title }}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
+@section('content')
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6">{{ $course->name }}</h1>
+    <p class="text-lg mb-6">{{ $course->description }}</p>
+
+    <h2 class="text-2xl font-semibold mb-4">Modules</h2>
+    <ul class="list-disc list-inside">
+        @foreach($modules as $module)
+            <li class="mb-2">
+                <a href="{{ route('admin.courses.modules.show', [$course->id, $module->id]) }}" class="text-blue-500 hover:underline">
+                    {{ $module->title }}
+                </a>
+            </li>
+        @endforeach
+    </ul>
+</div>
 @endsection

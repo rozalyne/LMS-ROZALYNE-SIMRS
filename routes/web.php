@@ -62,6 +62,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/{module}/edit', [ModuleController::class, 'edit'])->name('edit');
             Route::put('/{module}', [ModuleController::class, 'update'])->name('update');
             Route::delete('/{module}', [ModuleController::class, 'destroy'])->name('destroy');
+
+            // Complete Module
+            Route::post('/{module}/complete', [ModuleController::class, 'complete'])->name('complete');
         });
     });
 });

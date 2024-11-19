@@ -12,7 +12,7 @@ class CreateUserProgressTable extends Migration
             $table->id();
             $table->unsignedBigInteger('module_id');
             $table->unsignedBigInteger('user_id');
-            $table->integer('progress'); // Pastikan kolom progress ada
+            $table->boolean('progress');
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');

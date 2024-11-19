@@ -9,14 +9,14 @@ class UserProgressTableSeeder extends Seeder
 {
     public function run()
     {
-        // Menghapus semua data sebelumnya
+        // Clear any existing data in the user_progress table
         DB::table('user_progress')->truncate();
 
-        // Menyisipkan data ke dalam tabel user_progress
+        // Insert data with boolean progress values
         DB::table('user_progress')->insert([
-            ['module_id' => 1, 'progress' => 50, 'user_id' => 1],
-            ['module_id' => 2, 'progress' => 100, 'user_id' => 1],
-            ['module_id' => 1, 'progress' => 25, 'user_id' => 2],
+            ['module_id' => 1, 'progress' => false, 'user_id' => 1], // Not completed
+            ['module_id' => 2, 'progress' => true, 'user_id' => 1],  // Completed
+            ['module_id' => 1, 'progress' => false, 'user_id' => 2], // Not completed
         ]);
     }
 }
