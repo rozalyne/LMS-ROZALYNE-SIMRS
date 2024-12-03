@@ -19,7 +19,7 @@
 
     <main class="flex flex-col items-center justify-center text-center py-20">
         <h1 class="text-5xl font-bold text-pink-600">Welcome to Rozalyne SIMRS</h1>
-        <p class="mt-4 text-lg text-gray-600">Discover amazing features and manage your tasks efficiently.</p>
+        <p class="mt-4 text-lg text-gray-600">Learn Management System, Learning </p>
         <a href="{{ route('login') }}" class="mt-8 px-6 py-3 bg-pink-600 text-white rounded-lg shadow hover:bg-pink-500 transition">Get Started</a>
     </main>
 
