@@ -15,9 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesTableSeeder::class,
             UsersTableSeeder::class,
-            CoursesTableSeeder::class,
-            ModulesTableSeeder::class,
-            UserProgressTableSeeder::class,
         ]);
 
         // Aktifkan kembali foreign key checks
